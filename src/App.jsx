@@ -4,6 +4,7 @@ import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
 import { useDebounce } from 'react-use';
 import {getTrendingMovies, updateSearchCount } from './appwrite';
+import { motion } from "framer-motion";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -16,6 +17,40 @@ const API_OPTIONS = {
     Authorization:`Bearer ${API_KEY}`
   }
 }
+
+const AnimatedGrid = () => {
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    visible: (i) => ({
+      opacity: 1,
+      transition: {
+        delay: i * 0.05,
+        duration: 2,
+        repeat: Infinity,
+        repeatType: "reverse",
+      },
+    }),
+  };
+
+  return (
+    <div className="absolute inset-0 grid grid-cols-12 gap-4 -z-10 opacity-10">
+      {[...Array(144)].map((_, i) => (
+        <motion.div
+          key={i}
+          custom={i}
+          variants={gridVariants}
+          initial="hidden"
+          animate="visible"
+          className="h-8 bg-gradient-to-br from-[#D6C7FF] to-[#AB8BFF] rounded-sm"
+          style={{
+            boxShadow: "0 0 12px rgba(171, 139, 255, 0.2)",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 
 const App = () => {
 
@@ -93,7 +128,7 @@ const App = () => {
     <>
       <main>
         <div className="pattern" />
-
+        <AnimatedGrid />
         <div className="wrapper">
           <header>
             <img src="./hero.png" alt="Hero Banner" />
@@ -105,13 +140,13 @@ const App = () => {
           </header>
 
           {trendingMovies.length > 0 && (
-            <section className='trending'>
+            <section className="trending">
               <h2>Trending Movies</h2>
 
               <ul>
-                {trendingMovies.map((movie,index) => (
+                {trendingMovies.map((movie, index) => (
                   <li key={movie.$id}>
-                    <p>{index+1}</p>
+                    <p>{index + 1}</p>
                     <img src={movie.poster_url} alt={movie.title} />
                   </li>
                 ))}

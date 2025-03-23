@@ -17,7 +17,6 @@
 
   --breakpoint-xs: 480px;
 
-  --background-image-hero-pattern: url("/hero-bg.png");
 }
 
 @layer base {
@@ -49,10 +48,7 @@
 }
 
 @layer components {
-  .pattern {
-    @apply bg-hero-pattern w-screen h-screen bg-center bg-cover absolute z-0;
-  }
-
+  
   .wrapper {
     @apply px-5 py-12 xs:p-10 max-w-7xl mx-auto flex flex-col relative z-10;
   }
@@ -161,3 +157,21 @@
   }
 }
 
+.pattern {
+  @apply fixed inset-0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(15, 13, 35, 0.9) 0%,
+    rgba(3, 0, 20, 1) 100%
+  );
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: brightness(1) contrast(1);
+  }
+  50% {
+    filter: brightness(1.1) contrast(1.2);
+  }
+}
